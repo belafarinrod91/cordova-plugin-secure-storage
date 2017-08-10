@@ -6,6 +6,20 @@
 
 @implementation SecureStorage
 
+- (void)pluginInitialize
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+}
+
+- (void)finishLaunching:(NSNotification *)notification
+{
+	if (![[NSUserDefaults standardUserDefaults] objectForKey:@"FirstRun"]) {
+        // Delete values from keychain here
+        [[NSUserDefaults standardUserDefaults] setValue:@"1strun" forKey:@"FirstRun"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
 - (void)init:(CDVInvokedUrlCommand*)command
 {
     CFTypeRef accessibility;
