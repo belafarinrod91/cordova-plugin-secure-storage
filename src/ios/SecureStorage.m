@@ -8,7 +8,20 @@
 
 - (void)pluginInitialize
 {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+    static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    self.isFirstRun = [defaults boolForKey:hasRunAppOnceKey];
+    
+    if ([defaults boolForKey:hasRunAppOnceKey] == NO)
+    {
+        [defaults setBool:YES forKey:hasRunAppOnceKey];
+    }
+}
+
+-(void)getIsFirstRun:(CDVInvokedUrlCommand*)command
+{
+    NSString* foobar = self.isFirstRun ? @"YES" : @"NO";
+    [self successWithMessage: foobar : command.callbackId];
 }
 
 - (void)finishLaunching:(NSNotification *)notification

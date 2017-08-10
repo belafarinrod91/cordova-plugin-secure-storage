@@ -10,5 +10,6 @@
 - (void)clear:(CDVInvokedUrlCommand*)command;
 
 @property (nonatomic, copy) id keychainAccesssibilityMapping;
+@property (nonatomic) bool isFirstRun;
 
 @end
