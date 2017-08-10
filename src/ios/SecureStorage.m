@@ -4,25 +4,30 @@
 #import <Cordova/CDV.h>
 #import "SAMKeychain.h"
 
-@implementation SecureStorage
+@implementation SecureStorage {
+    bool isFirstRun;
+}
 
 - (void)pluginInitialize
 {
     static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    self.isFirstRun = [defaults boolForKey:hasRunAppOnceKey];
-    
+    isFirstRun = NO;
+
     if ([defaults boolForKey:hasRunAppOnceKey] == NO)
     {
+        isFirstRun = YES;
         [defaults setBool:YES forKey:hasRunAppOnceKey];
     }
+    
 }
 
 -(void)getIsFirstRun:(CDVInvokedUrlCommand*)command
 {
-    NSString* foobar = self.isFirstRun ? @"YES" : @"NO";
-    [self successWithMessage: foobar : command.callbackId];
+    NSString* _firstRun = isFirstRun ? @"true" : @"false";
+    [self successWithMessage: _firstRun : command.callbackId];
 }
+
 
 - (void)finishLaunching:(NSNotification *)notification
 {
